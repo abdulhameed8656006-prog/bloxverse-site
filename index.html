@@ -16,6 +16,7 @@ body{background:#232527;color:#f2f4f5;font-family:'Segoe UI',Helvetica,Arial,san
 label{display:block;font-size:13px;color:#a4a9ad;margin:10px 0 4px}
 input{width:100%;background:#232527;border:1px solid #4a4d50;border-radius:6px;color:#fff;padding:11px;font:inherit}
 .btn{width:100%;margin-top:16px;background:#00b06f;color:#fff;border:0;border-radius:6px;padding:12px;font:inherit;font-weight:800;font-size:16px;cursor:pointer}
+select{flex:1;min-width:0;background:#232527;border:1px solid #4a4d50;border-radius:6px;color:#fff;padding:10px 4px;font:inherit}
 .err{color:#ff6b6b;font-size:14px;min-height:20px;margin-top:10px}
 .note{color:#a4a9ad;font-size:12px;margin-top:10px;line-height:1.4}
 #home{background:#232527}
@@ -40,9 +41,9 @@ h2{padding:16px 16px 0;max-width:900px;margin:0 auto}
 <div id='auth' class='scr on'><div class='box'>
 <div class='logo'><i>Blox</i>Verse</div>
 <div class='tabs'><button id='tl' class='on'>Log in</button><button id='ts2'>Sign up</button></div>
-<label for='u'>Username</label><input id='u' autocomplete='username' maxlength='16'>
+<label for='u'>Username</label><input id='u' autocomplete='username' maxlength='20'>
 <label for='p'>Password</label><input id='p' type='password' autocomplete='current-password'>
-<div id='p2w' style='display:none'><label for='p2'>Confirm password</label><input id='p2' type='password' autocomplete='new-password'></div>
+<div id='p2w' style='display:none'><label for='p2'>Confirm password</label><input id='p2' type='password' autocomplete='new-password'><label>Birthday</label><div style='display:flex;gap:8px'><select id='bm' aria-label='Month'></select><select id='bd' aria-label='Day'></select><select id='by' aria-label='Year'></select></div><p class='note'>Username: 3 to 20 characters, letters and numbers, at most one underscore, not at the start or end, no spaces. Password: at least 8 characters with a letter and a number, and it cannot contain your username. Do not use your real name or contact details.</p><label style='display:flex;gap:8px;align-items:flex-start;color:#f2f4f5'><input type='checkbox' id='tc' style='width:auto;margin-top:3px'>I agree to the BloxVerse Terms and understand it is a fan project.</label></div>
 <div class='err' id='er'></div>
 <button class='btn' id='go'>Log in</button>
 <p class='note'>Accounts are saved in this browser only. Please do not use a password from another site. BloxVerse is an independent fan project and is not affiliated with Roblox Corporation.</p>
@@ -65,19 +66,26 @@ const show=id=>{document.querySelectorAll('.scr').forEach(e=>e.classList.toggle(
 let user=null,coins=0,mode='in';
 const users=()=>{try{return JSON.parse(localStorage.getItem('bvu')||'{}')}catch(e){return {}}};
 async function hash(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('bv:'+s));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('')}
+const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
+(function(){const Y=new Date().getFullYear();$('#bm').innerHTML='<option value="">Month</option>'+MN.map((m,i)=>'<option value="'+(i+1)+'">'+m+'</option>').join('');let d='<option value="">Day</option>';for(let i=1;i<=31;i++)d+='<option>'+i+'</option>';$('#bd').innerHTML=d;let y='<option value="">Year</option>';for(let i=Y;i>=Y-100;i--)y+='<option>'+i+'</option>';$('#by').innerHTML=y})();
+function nameErr(n){if(n.length<3||n.length>20)return 'Username must be 3 to 20 characters.';if(!/^[A-Za-z0-9_]+$/.test(n))return 'Usernames can only use letters, numbers and one underscore. No spaces.';if((n.match(/_/g)||[]).length>1)return 'Usernames can have only one underscore.';if(n[0]==='_'||n[n.length-1]==='_')return 'Usernames cannot start or end with an underscore.';return ''}
+function passErr(p,n){if(p.length<8)return 'Password must be at least 8 characters.';if(!/[A-Za-z]/.test(p)||!/[0-9]/.test(p))return 'Password needs at least one letter and one number.';if(p.toLowerCase().indexOf(n.toLowerCase())>=0)return 'Password cannot contain your username.';return ''}
+function bdate(){const m=+$('#bm').value,d=+$('#bd').value,y=+$('#by').value;if(!m||!d||!y)return null;const t=new Date(y,m-1,d);if(t.getMonth()!==m-1||t>new Date())return null;return t}
+function u13(){const b=bdate(),n=new Date();let a=n.getFullYear()-b.getFullYear();if(n<new Date(n.getFullYear(),b.getMonth(),b.getDate()))a--;return a<13}
 function tab(m){mode=m;$('#tl').classList.toggle('on',m==='in');$('#ts2').classList.toggle('on',m==='up');$('#p2w').style.display=m==='up'?'block':'none';$('#go').textContent=m==='in'?'Log in':'Sign up';$('#er').textContent=''}
 $('#tl').onclick=()=>tab('in');$('#ts2').onclick=()=>tab('up');
 $('#go').onclick=async()=>{
  const n=$('#u').value.trim(),p=$('#p').value,er=$('#er'),all=users(),k=n.toLowerCase();
- if(!/^[A-Za-z0-9_]{3,16}$/.test(n))return er.textContent='Username must be 3 to 16 letters, numbers or underscores.';
- if(p.length<6)return er.textContent='Password must be at least 6 characters.';
+ if(mode==='up'){const bad=nameErr(n)||passErr(p,n);if(bad)return er.textContent=bad;if(!bdate())return er.textContent='Please choose your birthday.';if(!$('#tc').checked)return er.textContent='Please agree to the Terms to continue.';if(u13()&&!confirm('Players under 13 need a parent or guardian to agree. Is a parent or guardian helping you sign up?'))return er.textContent='Ask a parent or guardian to help you sign up.'}
+ else if(!n||!p)return er.textContent='Enter your username and password.';
+ 
  const h=await hash(k+':'+p);
- if(mode==='up'){if(p!==$('#p2').value)return er.textContent='Passwords do not match.';if(all[k])return er.textContent='That username is taken. Try another.';all[k]=h;try{localStorage.setItem('bvu',JSON.stringify(all))}catch(e){return er.textContent='This browser blocked saving. Turn off private mode.'}}
+ if(mode==='up'){if(p!==$('#p2').value)return er.textContent='Passwords do not match.';if(all[k])return er.textContent='That username is taken. Try another.';all[k]=h;try{localStorage.setItem('bvu',JSON.stringify(all));const ag=JSON.parse(localStorage.getItem('bva')||'{}');ag[k]=u13()?1:0;localStorage.setItem('bva',JSON.stringify(ag))}catch(e){return er.textContent='This browser blocked saving. Turn off private mode.'}}
  else if(all[k]!==h)return er.textContent='Wrong username or password.';
  try{localStorage.setItem('bvs',n)}catch(e){}
  enter(n)};
 function enter(n){user=n;try{coins=+localStorage.getItem('bvc_'+n.toLowerCase())||0}catch(e){coins=0}
- $('#hi').textContent='Welcome, '+n;setC(coins);$('#p').value=$('#p2').value='';show('home')}
+ let ag={};try{ag=JSON.parse(localStorage.getItem('bva')||'{}')}catch(e){}$('#hi').textContent='Welcome, '+n+(ag[n.toLowerCase()]?' (under 13 account)':'');setC(coins);$('#p').value=$('#p2').value='';show('home')}
 function setC(n){coins=n;$('#hc').textContent=n;try{localStorage.setItem('bvc_'+user.toLowerCase(),n)}catch(e){}}
 $('#lo').onclick=()=>{try{localStorage.removeItem('bvs')}catch(e){}user=null;show('auth')};
 const GL=[['Obby World 3D','&#x1F9F1;','#d9573b',1],['Pet Paradise','&#x1F43E;','#e07aa8'],['Haunted Halls','&#x1F6AA;','#4a3b6b'],['Neighborhood Life','&#x1F3E1;','#3d8f5a'],['Mystery Murder','&#x1F52A;','#5c3b3b'],['Fruit Fighters','&#x1F34E;','#c0392b']];
