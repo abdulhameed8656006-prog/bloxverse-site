@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BloxVerse - Play, create, and hang out</title>
+<style>
+:root{--bg:#232527;--pan:#393b3d;--hd:#191a1c;--tx:#f2f4f5;--mut:#a4a9ad;--grn:#00b06f;--blu:#335fff;--ln:#4a4d50}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:"Source Sans Pro","Segoe UI",Helvetica,Arial,sans-serif}
+header{position:sticky;top:0;z-index:5;background:var(--hd);display:flex;align-items:center;gap:14px;padding:0 14px;height:48px}
+.logo{font-weight:900;font-size:20px;letter-spacing:-.5px}.logo i{font-style:normal;background:var(--grn);padding:0 6px;border-radius:5px;margin-right:2px}
+header a{color:var(--tx);text-decoration:none;font-weight:600;font-size:15px}
+header input{flex:1;max-width:340px;margin-left:auto;background:var(--pan);border:1px solid var(--ln);border-radius:6px;color:var(--tx);padding:7px 10px;font:inherit}
+.coin{background:var(--pan);border-radius:6px;padding:5px 10px;font-weight:700;white-space:nowrap}
+.wrap{display:flex;max-width:1200px;margin:0 auto}
+aside{width:200px;flex:none;padding:14px 8px;position:sticky;top:48px;align-self:flex-start}
+aside a{display:flex;gap:10px;padding:10px;border-radius:6px;color:var(--tx);text-decoration:none;font-weight:600}
+aside a:hover,aside a.on{background:var(--pan)}
+main{flex:1;min-width:0;padding:18px 16px 60px}
+.hi{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.av{width:72px;height:72px;border-radius:50%;background:var(--blu);display:grid;place-items:center;font-size:40px}
+h1{margin:0;font-size:26px}h2{font-size:20px;margin:22px 0 10px}
+.row{display:grid;grid-auto-flow:column;grid-auto-columns:150px;gap:12px;overflow-x:auto;padding-bottom:8px}
+.card{background:none;border:0;color:var(--tx);text-align:left;font:inherit;cursor:pointer;padding:0}
+.th{aspect-ratio:1;border-radius:8px;display:grid;place-items:center;font-size:58px;border:1px solid var(--ln)}
+.card:hover .th{filter:brightness(1.15)}
+.card b{display:block;margin-top:6px;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card small{color:var(--mut)}
+.fr{display:flex;gap:16px;overflow-x:auto}.fr div{text-align:center;font-size:13px;color:var(--mut)}.fr span{display:grid;place-items:center;width:64px;height:64px;border-radius:50%;background:var(--pan);font-size:32px;position:relative}.fr span::after{content:"";position:absolute;right:2px;bottom:2px;width:14px;height:14px;border-radius:50%;background:var(--grn);border:2px solid var(--bg)}
+.btn{background:var(--grn);color:#fff;border:0;border-radius:6px;padding:12px 28px;font:inherit;font-weight:800;font-size:17px;cursor:pointer}
+#md{position:fixed;inset:0;background:#000a;display:none;place-items:center;z-index:9;padding:14px}
+#md.on{display:grid}
+#bx{background:var(--pan);border-radius:10px;max-width:420px;width:100%;padding:18px;text-align:center}
+#bx .th{width:120px;margin:0 auto 10px;font-size:64px}
+#arena{height:190px;position:relative;background:var(--bg);border-radius:8px;margin:12px 0;overflow:hidden;touch-action:manipulation}
+#tg{position:absolute;font-size:40px;border:0;background:none;cursor:pointer;padding:0}
+.x{background:none;border:1px solid var(--ln);color:var(--tx);border-radius:6px;padding:8px 14px;font:inherit;cursor:pointer;margin-left:8px}
+footer{text-align:center;color:var(--mut);font-size:13px;padding:20px}
+@media(max-width:760px){aside{display:none}header a.n{display:none}}
+</style></head><body>
+<header><span class="logo"><i>Blox</i>Verse</span><a class="n" href="#">Discover</a><a class="n" href="#">Avatar Shop</a><a class="n" href="#">Create</a><input id="q" placeholder="Search games" aria-label="Search games"><span class="coin">&#x1FA99; <span id="c">0</span></span></header>
+<div class="wrap">
+<aside><a class="on" href="#">&#x1F3E0; Home</a><a href="#">&#x1F464; Profile</a><a href="#">&#x1F4AC; Messages</a><a href="#">&#x1F46B; Friends</a><a href="#">&#x1F9CD; Avatar</a><a href="#">&#x1F392; Inventory</a><a href="#">&#x1F465; Communities</a><a href="#">&#x1F4F0; Blog</a></aside>
+<main>
+<div class="hi"><div class="av">&#x1F9D1;</div><h1>Welcome back, Player</h1></div>
+<h2>Friends</h2><div class="fr" id="fr"></div>
+<div id="rows"></div>
+</main></div>
+<footer>BloxVerse is an independent fan project. It is not affiliated with Roblox Corporation.</footer>
+<div id="md"><div id="bx"></div></div>
+<script>
+const $=s=>document.querySelector(s);
+let coins=0;try{coins=+localStorage.getItem('bvc')||0}catch(e){}
+const setC=n=>{coins=n;$('#c').textContent=n.toLocaleString();try{localStorage.setItem('bvc',n)}catch(e){}};setC(coins);
+const G=[['Pet Paradise','🐾','#e07aa8',96,'48K'],['Tower Climb','🧱','#d9573b',91,'31K'],['Fruit Fighters','🍎','#c0392b',94,'62K'],['Haunted Halls','🚪','#4a3b6b',95,'27K'],['Neighborhood Life','🏡','#3d8f5a',92,'85K'],['Tycoon Town','🏭','#c08a2b',89,'19K'],['Mystery Murder','🔪','#5c3b3b',93,'40K'],['Sky Survival','☄️','#3a6ea8',90,'22K'],['Speed Racers','🏎️','#2f8f9d',88,'14K'],['Cafe Tycoon','☕','#8a5a3a',87,'11K'],['Obby Rush','🏃','#6a9a2a',90,'33K'],['Island Brawl','🏝️','#2a9d8f',91,'26K']];
+const R=[['Continue',[0,1,2,3,4,5]],['Recommended for you',[6,7,8,9,10,11]],['Popular right now',[4,2,0,3,6,1,10,7]]];
+$('#fr').innerHTML=['🦊','🐼','🐸','🦄','🐲','🐱'].map((e,i)=>'<div><span>'+e+'</span>Friend'+(i+1)+'</div>').join('');
+function draw(f){$('#rows').innerHTML=R.map(([t,ix])=>{const c=ix.filter(i=>G[i][0].toLowerCase().includes(f));return c.length?'<h2>'+t+'</h2><div class="row">'+c.map(i=>{const g=G[i];return '<button class="card" data-i="'+i+'"><div class="th" style="background:'+g[2]+'">'+g[1]+'</div><b>'+g[0]+'</b><small>👍 '+g[3]+'% · 👤 '+g[4]+'</small></button>'}).join('')+'</div>':''}).join('')}
+draw('');$('#q').oninput=e=>draw(e.target.value.toLowerCase());
+$('#rows').onclick=e=>{const b=e.target.closest('.card');if(b)open(+b.dataset.i)};
+let tm,tk;
+function open(i){const g=G[i];$('#bx').innerHTML='<div class="th" style="background:'+g[2]+'">'+g[1]+'</div><h1>'+g[0]+'</h1><p style="color:var(--mut)">👍 '+g[3]+'% · 👤 '+g[4]+' playing</p><div id="arena" hidden></div><div id="sc"></div><button class="btn" id="pl">Play</button><button class="x" id="cl">Close</button>';$('#md').classList.add('on');$('#cl').onclick=close;$('#pl').onclick=()=>play(g)}
+function close(){clearInterval(tm);$('#md').classList.remove('on')}
+$('#md').onclick=e=>{if(e.target.id==='md')close()};
+function play(g){clearInterval(tm);let s=0,t=10;const a=$('#arena');a.hidden=false;a.innerHTML='<button id="tg" aria-label="Target">'+g[1]+'</button>';$('#pl').hidden=true;
+const mv=()=>{const b=$('#tg');b.style.left=Math.random()*(a.clientWidth-44)+'px';b.style.top=Math.random()*(a.clientHeight-44)+'px'};
+const sh=()=>$('#sc').textContent='Tap the icon! Score '+s+' · '+t+' s left';mv();sh();
+$('#tg').onclick=()=>{s++;mv();sh()};
+tm=setInterval(()=>{t--;sh();if(t<=0){clearInterval(tm);a.hidden=true;setC(coins+s);$('#sc').textContent='Round over: you earned '+s+' coins';$('#pl').hidden=false;$('#pl').textContent='Play again'}},1000)}
+</script></body></html>
