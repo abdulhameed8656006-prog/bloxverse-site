@@ -19,11 +19,19 @@ and six playable 3D games built with [Three.js](https://threejs.org/).
 | Neighborhood Life | Explore a town and collect cash. |
 | Mystery Murder | Survive 60 seconds against the murderer and grab coins. |
 | Fruit Fighters | Fight 10 bandits with the ATTACK button (or the F key). |
+| Lava Rise | The lava keeps rising. Climb the spiral of platforms and survive 60 seconds. |
+| Speed Run | Race through 8 gates, hit boost pads, and beat your best time. |
 
 ## Features
 
 - Sign up and log in. Sign-up asks for a birthday, a username (3 to 20 characters, letters and numbers, at most one underscore, not at the start or end) and a password (8+ characters with a letter and a number).
-- Lobby with Home, Games, Friends and Avatar tabs.
+- A Roblox-style website with a top search bar and a side menu: Home, Discover, Avatar, Shop, Friends, Communities, Create and Profile.
+- Discover: search games, filter by genre, and sort by players or rating.
+- Avatar Shop: spend coins on hair, hats, back items and faces.
+- Communities: join groups.
+- Create: link to BloxVerse Studio, and import games made there to play them.
+- Profile: your avatar, stats and badges.
+- Daily reward: claim 50 free coins every day.
 - Friends list: add friends, see who is online, and tap **Join** to jump into their game.
 - Roblox-style avatar editor with a live 3D preview: skin tone, shirt, pants, hair, hat, back item and face. Your avatar shows in every game.
 - Coins are shared across every game and saved per account.
