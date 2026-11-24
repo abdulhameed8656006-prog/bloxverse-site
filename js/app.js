@@ -27,7 +27,7 @@ function enter(n){user=n;try{coins=+localStorage.getItem('bvc_'+n.toLowerCase())
  let ag={};try{ag=JSON.parse(localStorage.getItem('bva')||'{}')}catch(e){}$('#hi').textContent='Welcome, '+n+(ag[n.toLowerCase()]?' (under 13 account)':'');setC(coins);$('#p').value=$('#p2').value='';openHome()}
 function setC(n){coins=n;$('#hc').textContent=n;try{localStorage.setItem('bvc_'+user.toLowerCase(),n)}catch(e){}}
 $('#lo').onclick=()=>{try{localStorage.removeItem('bvs')}catch(e){}user=null;show('auth')};
-let AV=null,fr=[],stat=null,view='home',WIKI=null,pv=null;
+let AV=null,fr=[],stat=null,view='home',WIKI=null,pv=null,dq='',dg='All',ds='pop',inv=[],mg=Object.create(null),ST={played:{}},joined=[];
 const SKINS=[0xffd23c,0xf5cba7,0xe0ac69,0xc68642,0x8d5524,0x5c3a21],SHIRTS=[0x335fff,0xe8453c,0x2fb35a,0xffc928,0xa24cf0,0xff8a2b,0x222222,0xff7aa8],PANTS=[0x2a8f4a,0x222222,0x335fff,0x6b3e1f,0xe8453c,0xffffff,0x888888,0xa24cf0],HAIRC=[0x222222,0x6b3e1f,0xd9a441,0xe8453c,0xffffff,0x3a6ff0],DEF={skin:1,shirt:0,pants:0,hair:1,hc:0,hat:0,back:0,face:0};
 const NAMES={hair:['None','Short','Spiky','Long','Afro'],hat:['None','Cap','Crown','Wizard','Beanie'],back:['None','Backpack','Cape'],face:['Smile','Cool','Happy','Grumpy']};
 const hex=c=>'#'+('000000'+c.toString(16)).slice(-6),rnd=n=>Math.floor(Math.random()*n);
@@ -44,31 +44,58 @@ function preview(){killPv();const cv=$('#pvc');if(!cv||!window.THREE)return;let 
  const a=avatar(AV,user);a.remove(a.children[a.children.length-1]);s.add(a);pv={r:r,raf:0};const t0=performance.now();
  (function f(){pv.raf=requestAnimationFrame(f);a.rotation.y=.5+Math.sin((performance.now()-t0)/900)*.7;r.render(s,c)})()}
 
-const GL=[['obby','Obby World','&#x1F9F1;','#d9573b','Hard tower with moving platforms'],['pets','Pet Paradise','&#x1F43E;','#e07aa8','Hatch eggs, collect pets'],['haunted','Haunted Halls','&#x1F6AA;','#4a3b6b','Find 5 keys, escape the ghost'],['town','Neighborhood Life','&#x1F3E1;','#3d8f5a','Explore town, collect cash'],['murder','Mystery Murder','&#x1F52A;','#5c3b3b','Survive 60 s from the murderer'],['fruit','Fruit Fighters','&#x1F34E;','#c0392b','Fight bandits with ATTACK']];
+const GL=[['obby','Obby World','&#x1F9F1;','#d9573b','Hard tower with moving platforms','Obby',48,94],['pets','Pet Paradise','&#x1F43E;','#e07aa8','Hatch eggs, collect pets','Pets',62,96],['haunted','Haunted Halls','&#x1F6AA;','#4a3b6b','Find 5 keys, escape the ghost','Horror',35,95],['town','Neighborhood Life','&#x1F3E1;','#3d8f5a','Explore town, collect cash','Roleplay',85,92],['murder','Mystery Murder','&#x1F52A;','#5c3b3b','Survive 60 s from the murderer','Mystery',41,93],['fruit','Fruit Fighters','&#x1F34E;','#c0392b','Fight bandits with ATTACK','Fighting',57,91],['lava','Lava Rise','&#x1F30B;','#d4541f','Climb before the lava rises','Survival',29,90],['race','Speed Run','&#x1F3C1;','#2f8f9d','Race through gates and boost pads','Racing',22,89]];
 const BOTS=[['Builder_1','&#x1F98A;'],['xX_Noob_Xx','&#x1F43C;'],['PetLover','&#x1F438;'],['SkyKing','&#x1F984;'],['DragonFan','&#x1F432;'],['PixelCat','&#x1F431;'],['Zara_Plays','&#x1F43B;'],['TowerPro','&#x1F985;']];
 const ls=k=>{try{return localStorage.getItem(k)}catch(e){return null}},lk=k=>k+user.toLowerCase(),gi=id=>GL.find(g=>g[0]===id);
-function loadU(){try{fr=JSON.parse(ls(lk('bvf_'))||'[]')}catch(e){fr=[]}try{AV=Object.assign({},DEF,JSON.parse(ls(lk('bvav_'))||'{}'))}catch(e){AV=Object.assign({},DEF)}if(!stat){stat={};BOTS.forEach(b=>{stat[b[0]]={e:b[1],on:Math.random()<.65,g:Math.floor(Math.random()*GL.length)}})}}
+function loadU(){try{fr=JSON.parse(ls(lk('bvf_'))||'[]')}catch(e){fr=[]}try{AV=Object.assign({},DEF,JSON.parse(ls(lk('bvav_'))||'{}'))}catch(e){AV=Object.assign({},DEF)}try{inv=JSON.parse(ls(lk('bvinv_'))||'[]')}catch(e){inv=[]}try{mg=Object.assign(Object.create(null),JSON.parse(ls(lk('bvg_'))||'{}'))}catch(e){mg=Object.create(null)}try{ST=Object.assign({played:{}},JSON.parse(ls(lk('bvst_'))||'{}'))}catch(e){ST={played:{}}}try{joined=JSON.parse(ls(lk('bvgr_'))||'[]')}catch(e){joined=[]}if(!ST.joined){ST.joined=Date.now();saveST()}if(!stat){stat={};BOTS.forEach(b=>{stat[b[0]]={e:b[1],on:Math.random()<.65,g:Math.floor(Math.random()*GL.length)}})}}
 function saveF(){try{localStorage.setItem(lk('bvf_'),JSON.stringify(fr))}catch(e){}}
 function note(m){const e=$('#ht');e.textContent=m;e.style.display='block';clearTimeout(note.t);note.t=setTimeout(()=>e.style.display='none',2500)}
-const gcard=g=>'<button class="gc" data-p="'+g[0]+'"><div class="t"><img src="icons/games/'+g[0]+'.svg" alt=""></div><b>'+g[1]+'</b><small>'+g[4]+'</small></button>';
+const gcard=g=>'<button class="gc" data-p="'+g[0]+'"><div class="t"><img src="icons/games/'+g[0]+'.svg" alt=""></div><b>'+g[1]+'</b><small>'+g[4]+'</small><small class="st">&#x1F44D; '+g[7]+'% &middot; &#x1F464; '+g[6]+'K</small></button>';
 function fline(n,rm){const s=stat[n]||{e:'&#x1F9D1;',on:false};return '<div class="fl"><span class="e">'+s.e+'</span><div><b>'+n+'</b><small class="'+(s.on?'gn':'')+'">'+(s.on?'Online - '+GL[s.g][1]:'Offline')+'</small></div>'+(s.on?'<button class="sm" data-j="'+GL[s.g][0]+'" data-n="'+n+'">Join</button>':'')+(rm?'<button class="sm" data-rm="'+n+'">Remove</button>':'')+'</div>'}
 const VW={
-home(){const last=gi(ls(lk('bvl_'))||'obby')||GL[0],on=fr.filter(n=>stat[n]&&stat[n].on);return '<div class="wl"><div class="av2" style="background:'+hex(SHIRTS[AV.shirt])+'">&#x1F9D1;</div><div><h2>Hi, '+user+'!</h2><small class="hint">Pick a game and play with friends.</small></div></div><h3>Friends online</h3>'+(on.length?on.map(n=>fline(n)).join(''):'<p class="hint">No friends online. Open Friends to add some.</p>')+'<h3>Continue</h3><div class="row">'+gcard(last)+'</div><h3>Recommended</h3><div class="row">'+GL.map(gcard).join('')+'</div>'},
+home(){const last=gi(ls(lk('bvl_'))||'obby')||GL[0],on=fr.filter(n=>stat[n]&&stat[n].on);return '<div class="wl"><div class="av2" style="background:'+hex(SHIRTS[AV.shirt])+'">&#x1F9D1;</div><div><h2>Hi, '+user+'!</h2><small class="hint">Pick a game and play with friends.</small></div></div>'+daily()+'<h3>Friends online</h3>'+(on.length?on.map(n=>fline(n)).join(''):'<p class="hint">No friends online. Open Friends to add some.</p>')+'<h3>Continue</h3><div class="row">'+gcard(last)+'</div><h3>Recommended</h3><div class="row">'+GL.map(gcard).join('')+'</div>'},
 games(){return '<h3>All games</h3><div class="gr">'+GL.map(gcard).join('')+'</div><h3>About Roblox</h3><p class="hint wk"></p><small class="hint"><a href="https://en.wikipedia.org/wiki/Roblox" target="_blank" rel="noopener">Read more on Wikipedia</a>. Text from Wikipedia, CC BY-SA 4.0. BloxVerse is a fan project and is not affiliated with Roblox.</small>'},
 friends(){const sug=BOTS.map(b=>b[0]).filter(n=>fr.indexOf(n)<0).slice(0,4);return '<h3>Friends ('+fr.length+')</h3>'+(fr.length?fr.map(n=>fline(n,1)).join(''):'<p class="hint">No friends yet.</p>')+'<h3>Add a friend</h3><div class="addf"><input id="fa" placeholder="Username" maxlength="20"><button class="btn" id="fb" style="width:auto;margin:0;padding:0 18px">Add</button></div><h3>People you may know</h3>'+sug.map(n=>'<div class="fl"><span class="e">'+stat[n].e+'</span><div><b>'+n+'</b></div><button class="sm" data-add="'+n+'">Add</button></div>').join('')},
-avatar(){const op=(k,l,n,sw)=>'<h3>'+l+'</h3><div class="row">'+Array.from({length:n},(_,i)=>sw?'<div class="sw'+(AV[k]===i?' on':'')+'" data-k="'+k+'" data-o="'+i+'" style="background:'+hex(sw[i])+'"></div>':'<button class="sm'+(AV[k]===i?' sel':'')+'" data-k="'+k+'" data-o="'+i+'">'+NAMES[k][i]+'</button>').join('')+'</div>';
- return '<h3>Your avatar</h3><div class="avw"><canvas id="pvc" width="240" height="300"></canvas><div>'+op('skin','Skin tone',6,SKINS)+op('shirt','Shirt',8,SHIRTS)+op('pants','Pants',8,PANTS)+op('hair','Hair style',5)+op('hc','Hair colour',6,HAIRC)+op('hat','Hat',5)+op('back','Back item',3)+op('face','Face',4)+'</div></div>'}};
-function setView(v){view=v;killPv();document.querySelectorAll('#nv button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));$('#mn').innerHTML=VW[v]();if(v==='avatar')preview();fillWk()}
+avatar(){const op=(k,l,n,sw)=>'<h3>'+l+'</h3><div class="row chips">'+Array.from({length:n},(_,i)=>sw?'<div class="sw'+(AV[k]===i?' on':'')+'" data-k="'+k+'" data-o="'+i+'" style="background:'+hex(sw[i])+'"></div>':'<button class="sm'+(AV[k]===i?' sel':'')+'" data-k="'+k+'" data-o="'+i+'">'+NAMES[k][i]+(own(k,i)?'':' &#x1F512;')+'</button>').join('')+'</div>';
+ return '<h3>Your avatar</h3><div class="avw"><canvas id="pvc" width="240" height="300"></canvas><div>'+op('skin','Skin tone',6,SKINS)+op('shirt','Shirt',8,SHIRTS)+op('pants','Pants',8,PANTS)+op('hair','Hair style',5)+op('hc','Hair colour',6,HAIRC)+op('hat','Hat',5)+op('back','Back item',3)+op('face','Face',4)+'<p class="hint">Locked items are sold in the Shop.</p></div></div>'}};
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const GEN=['All','Obby','Roleplay','Horror','Mystery','Fighting','Pets','Survival','Racing'];
+const PAID={hair2:40,hair3:40,hair4:80,hat1:30,hat2:200,hat3:120,hat4:50,back1:60,back2:150,face1:50,face2:20,face3:20};
+const GR=[['Obby Masters','&#x1F9F1;',12400],['Pet Lovers','&#x1F43E;',9800],['Builders Club','&#x1F528;',15200],['Horror Fans','&#x1F47B;',7300],['Speed Racers','&#x1F3CE;',5600]];
+const own=(k,i)=>!PAID[k+i]||inv.indexOf(k+i)>=0;
+function saveST(){try{localStorage.setItem(lk('bvst_'),JSON.stringify(ST))}catch(e){}}
+function bestT(t){if(!ST.best||t<ST.best){ST.best=t;saveST()}}
+function daily(){const t=new Date().toDateString();return ls(lk('bvd_'))===t?'':'<div class="fl"><span class="e">&#x1F381;</span><div><b>Daily reward</b><small>Claim 50 free coins today</small></div><button class="sm sel" data-daily="1">Claim</button></div>'}
+VW.discover=()=>{let L=GL.filter(g=>(dg==='All'||g[5]===dg)&&(!dq||g[1].toLowerCase().indexOf(dq.toLowerCase())>=0));L=L.slice().sort((a,b)=>ds==='pop'?b[6]-a[6]:b[7]-a[7]);
+ return '<h3>Discover</h3><div class="row chips">'+GEN.map(x=>'<button class="sm'+(x===dg?' sel':'')+'" data-g="'+x+'">'+x+'</button>').join('')+'</div><div class="row chips"><button class="sm'+(ds==='pop'?' sel':'')+'" data-s="pop">Most players</button><button class="sm'+(ds==='top'?' sel':'')+'" data-s="top">Top rated</button></div>'+(dq?'<p class="hint">Results for "'+esc(dq)+'"</p>':'')+(L.length?'<div class="gr">'+L.map(gcard).join('')+'</div>':'<p class="hint">No games found.</p>')};
+VW.shop=()=>{const cat={hair:'Hair',hat:'Hats',back:'Back items',face:'Faces'};return '<h3>Avatar Shop</h3><p class="hint">Spend coins from games on new looks. You have '+coins.toLocaleString()+' coins.</p>'+Object.keys(cat).map(k=>{const its=Object.keys(PAID).filter(x=>x.indexOf(k)===0&&x.length===k.length+1);return '<h3>'+cat[k]+'</h3><div class="shopg">'+its.map(x=>{const i=+x.slice(k.length),has=inv.indexOf(x)>=0;return '<div class="si"><b>'+NAMES[k][i]+'</b><small>'+(has?'Owned':'&#x1FA99; '+PAID[x])+'</small><button class="sm'+(has&&AV[k]===i?' sel':'')+'" data-b="'+x+'" data-sk="'+k+'" data-si="'+i+'">'+(has?(AV[k]===i?'Wearing':'Wear'):'Buy')+'</button></div>'}).join('')+'</div>'}).join('')};
+VW.groups=()=>'<h3>Communities</h3>'+GR.map((g,i)=>{const j=joined.indexOf(g[0])>=0;return '<div class="fl"><span class="e">'+g[1]+'</span><div><b>'+g[0]+'</b><small>'+(g[2]+(j?1:0)).toLocaleString()+' members</small></div><button class="sm'+(j?' sel':'')+'" data-gr="'+i+'">'+(j?'Joined':'Join')+'</button></div>'}).join('');
+VW.create=()=>'<h3>Create</h3><div class="fl"><span class="e">&#x1F6E0;</span><div><b>BloxVerse Studio</b><small>Build your own 3D game in the browser.</small></div><a class="lnk" href="https://abdulhameed8656006-prog.github.io/bloxverse-studio/" target="_blank" rel="noopener">Open Studio</a></div><h3>My games</h3><p class="hint">Export a game from Studio, then import the .bloxgame.json file here to play it in BloxVerse.</p><input type="file" id="gf" accept=".json,application/json" hidden><button class="btn" style="width:auto;padding:10px 20px" data-imp="1">Import a game</button><div style="margin-top:12px">'+(Object.keys(mg).length?Object.keys(mg).map(n=>'<div class="fl"><span class="e">&#x1F3AE;</span><div><b>'+esc(n)+'</b><small>'+mg[n].objs.length+' parts</small></div><button class="sm" data-pc="'+esc(n)+'">Play</button><button class="sm" data-dc="'+esc(n)+'">Delete</button></div>').join(''):'<p class="hint">No imported games yet.</p>')+'</div>';
+VW.profile=()=>{const pn=Object.keys(ST.played||{}).length,bd=[['Newcomer','&#x1F44B;',1],['Explorer','&#x1F9ED;',pn>=GL.length],['Fashionista','&#x1F457;',inv.length>=5],['Social Butterfly','&#x1F98B;',fr.length>=3],['Rich','&#x1F4B0;',coins>=500],['Creator','&#x1F6E0;',Object.keys(mg).length>0],['Community','&#x1F465;',joined.length>=2]];
+ return '<h3>Profile</h3><div class="avw"><canvas id="pvc" width="240" height="300"></canvas><div><h2 style="padding:0">'+esc(user)+'</h2><p class="hint">Joined '+new Date(ST.joined||Date.now()).toLocaleDateString()+'</p><div class="stats"><div><b>'+coins.toLocaleString()+'</b><small>Coins</small></div><div><b>'+fr.length+'</b><small>Friends</small></div><div><b>'+pn+'</b><small>Games played</small></div><div><b>'+inv.length+'</b><small>Items owned</small></div><div><b>'+(ST.best?ST.best.toFixed(1)+' s':'-')+'</b><small>Best Speed Run</small></div></div></div></div><h3>Badges</h3><div class="row chips">'+bd.map(b=>'<div class="bdg'+(b[2]?'':' off')+'"><span>'+b[1]+'</span><small>'+b[0]+'</small></div>').join('')+'</div>'+(joined.length?'<h3>Communities</h3><p class="hint">'+joined.map(esc).join(', ')+'</p>':'')};
+function importGame(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!d||!Array.isArray(d.objs))throw 0;const nm=String(d.name||'My Game').slice(0,30),n=(v,df,a,b)=>Number.isFinite(+v)?Math.max(a,Math.min(b,+v)):df,RO=['solid','spawn','coin','kill','check','goal'],SH=['box','sphere','cyl'];
+ mg[nm]={name:nm,objs:d.objs.slice(0,500).map(o=>({sh:SH.indexOf(o.sh)>=0?o.sh:'box',role:RO.indexOf(o.role)>=0?o.role:'solid',x:n(o.x,0,-2000,2000),y:n(o.y,0,-2000,2000),z:n(o.z,0,-2000,2000),sx:n(o.sx,1,.1,500),sy:n(o.sy,1,.1,500),sz:n(o.sz,1,.1,500),c:/^#[0-9a-f]{6}$/i.test(o.c)?o.c:'#888888'}))};
+ try{localStorage.setItem(lk('bvg_'),JSON.stringify(mg))}catch(x){}note('Imported "'+nm+'"');setView('create')}catch(x){note('That file is not a valid game')}};r.readAsText(f);e.target.value=''}
+$('#sq').oninput=e=>{dq=e.target.value;setView('discover')};
+function setView(v){view=v;killPv();document.querySelectorAll('#nv button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));$('#mn').innerHTML=VW[v]();if(v==='avatar'||v==='profile')preview();if(v==='create'&&$('#gf'))$('#gf').onchange=importGame;fillWk()}
 function openHome(){loadU();setView(view);show('home')}
 function addF(name){name=(name||'').trim();if(!name)return;const k=name.toLowerCase(),bot=BOTS.find(b=>b[0].toLowerCase()===k);if(k===user.toLowerCase())return note('You cannot add yourself');if(!bot&&!users()[k])return note('No player found with that username');const c=bot?bot[0]:k;if(fr.indexOf(c)>=0)return note('You are already friends');fr.push(c);saveF();note('You and '+c+' are now friends');setView('friends')}
-function play(id){try{localStorage.setItem(lk('bvl_'),id)}catch(e){}startGame(id)}
+function play(id){try{localStorage.setItem(lk('bvl_'),id)}catch(e){}ST.played[id]=1;saveST();startGame(id)}
 $('#nv').onclick=e=>{const b=e.target.closest('button');if(b&&b.dataset.v)setView(b.dataset.v)};
 $('#mn').onclick=e=>{const b=e.target.closest('button,.sw');if(!b)return;const d=b.dataset;
  if(d.p)return detail(d.p);
  if(d.j){note('Joining '+d.n+'...');return play(d.j)}
  if(d.rm){fr=fr.filter(x=>x!==d.rm);saveF();return setView('friends')}
  if(d.add)return addF(d.add);
- if(d.k){AV[d.k]=+d.o;try{localStorage.setItem(lk('bvav_'),JSON.stringify(AV))}catch(e){}return setView('avatar')}
+ if(d.k){if(!own(d.k,+d.o))return note('Locked. Buy it in the Shop first.');AV[d.k]=+d.o;try{localStorage.setItem(lk('bvav_'),JSON.stringify(AV))}catch(e){}return setView('avatar')}
+ if(d.b){const k=d.sk,i=+d.si;if(inv.indexOf(d.b)<0){if(coins<PAID[d.b])return note('Not enough coins. Play games to earn more!');setC(coins-PAID[d.b]);inv.push(d.b);try{localStorage.setItem(lk('bvinv_'),JSON.stringify(inv))}catch(e){}note('Bought '+NAMES[k][i]+'!')}AV[k]=i;try{localStorage.setItem(lk('bvav_'),JSON.stringify(AV))}catch(e){}return setView('shop')}
+ if(d.g){dg=d.g;return setView('discover')}
+ if(d.s){ds=d.s;return setView('discover')}
+ if(d.gr){const n=GR[+d.gr][0],ix=joined.indexOf(n);if(ix>=0)joined.splice(ix,1);else joined.push(n);try{localStorage.setItem(lk('bvgr_'),JSON.stringify(joined))}catch(e){}return setView('groups')}
+ if(d.imp)return $('#gf').click();
+ if(d.pc)return play('c:'+d.pc);
+ if(d.dc){delete mg[d.dc];try{localStorage.setItem(lk('bvg_'),JSON.stringify(mg))}catch(e){}return setView('create')}
+ if(d.daily){try{localStorage.setItem(lk('bvd_'),new Date().toDateString())}catch(e){}setC(coins+50);note('+50 coins! Come back tomorrow.');return setView('home')}
  if(b.id==='fb')addF($('#fa').value)};
 try{const s=localStorage.getItem('bvs');if(s&&users()[s.toLowerCase()])enter(s)}catch(e){}
 
@@ -112,7 +139,7 @@ function coin(x,z,y){const m=new THREE.Mesh(new THREE.CylinderGeometry(1,1,.3,16
 function ground0(sz,col,sky,fog){sc.background=new THREE.Color(sky);sc.fog=new THREE.Fog(sky,fog[0],fog[1]);const b=new THREE.Mesh(new THREE.BoxGeometry(sz,1,sz),new THREE.MeshLambertMaterial({map:grid(col)}));b.position.y=-.5;sc.add(b);plats.push({x:0,y:-.5,z:0,w:sz,h:1,d:sz})}
 function friendsOnline(){return fr.filter(n=>stat[n]&&stat[n].on)}
 function crowd(n,r){const L=friendsOnline().concat(['Builder_1','xX_Noob_Xx','PetLover','SkyKing','Zara_Plays']);for(let i=0;i<n;i++){const a=avatar(rcfg(),L[i]);a.position.set(Math.random()*r*2-r,0,Math.random()*r-r/2+10);a.tx=a.position.x;a.tz=a.position.z;a.t=Math.random()*9;sc.add(a);npcs.push(a)}}
-function pushOut(P){for(const w of walls){const ox=Math.abs(P.x-w.x)-(w.w/2+.8),oz=Math.abs(P.z-w.z)-(w.d/2+.8);if(ox<0&&oz<0&&P.y<(w.h||99)){if(ox>oz)P.x+=(P.x>w.x?1:-1)*-ox;else P.z+=(P.z>w.z?1:-1)*-oz}}}
+function pushOut(P){for(const w of walls){const ox=Math.abs(P.x-w.x)-(w.w/2+.8),oz=Math.abs(P.z-w.z)-(w.d/2+.8);if(ox<0&&oz<0&&P.y<(w.h||99)&&P.y+5>(w.b==null?-99:w.b)){if(ox>oz)P.x+=(P.x>w.x?1:-1)*-ox;else P.z+=(P.z>w.z?1:-1)*-oz}}}
 function chase(e,dt,s){const P=me.position,dx=P.x-e.position.x,dz=P.z-e.position.z,d=Math.hypot(dx,dz)||1;e.position.x+=dx/d*s*dt;e.position.z+=dz/d*s*dt;pushOut(e.position);e.rotation.y=Math.atan2(dx,dz);swing(e,true,dt,'t');return d}
 function free(x,z){return !walls.some(w=>Math.abs(x-w.x)<w.w/2+2&&Math.abs(z-w.z)<w.d/2+2)}
 function rp(){let x,z,k=0;do{x=Math.random()*84-42;z=Math.random()*84-42}while(!free(x,z)&&k++<40);return[x,z]}
@@ -157,6 +184,39 @@ B.fruit=()=>{ground0(100,'#c9a56b',0xffd9a0,[90,280]);W.hp=5;W.k=0;W.cd=0;W.ac=0
  W.upd=dt=>{W.ac-=dt;W.cd-=dt;const P=me.position;let hit=false;W.en.forEach(e=>{if(chase(e,dt,8)<2.8&&W.cd<=0)hit=true});
   if(hit){W.hp--;W.cd=1;toast('Ouch!',700);if(W.hp<=0){toast('Defeated! Try again',2500);P.set(0,1,20);reset()}}
   W.obj='Bandits defeated: '+W.k+'/10';hud()}};
+B.lava=()=>{ground0(100,'#6b6b6b',0x2a1010,[60,220]);W.ly=-6;
+ W.lv=new THREE.Mesh(new THREE.BoxGeometry(100,.3,100),new THREE.MeshLambertMaterial({color:0xff5a1f,emissive:0xaa2200,transparent:true,opacity:.9}));W.lv.position.y=-6;sc.add(W.lv);
+ const cols=[0xe8453c,0xffc928,0x3a6ff0,0x2fb35a,0xa24cf0,0xff8a2b];
+ for(let i=0;i<36;i++){const a=i*.65,r=14+(i%2)*5,y=2+i*1.05,x=Math.cos(a)*r,z=Math.sin(a)*r;addP(x,y,z,i%6===5?4:6,cols[i%6],false);if(i%5===2)coin(x,z,y)}
+ crowd(2,40);
+ W.upd=dt=>{W.t+=dt;W.ly+=.55*dt;W.lv.position.y=W.ly;const P=me.position;
+  if(P.y+.3<W.ly){toast('You fell in the lava! Back to start',2000);W.ly=-6;W.t=0;P.set(0,1,20);vy=0}
+  if(W.t>=60){setC(coins+50);toast('You survived! +50 coins',3500);W.ly=-6;W.t=0;P.set(0,1,20);vy=0}
+  W.obj='Climb! Lava rising. Survive '+Math.ceil(60-W.t)+' s';hud()}};
+B.race=()=>{ground0(160,'#5a5f66',0x9fd8ff,[100,300]);W.sp={x:0,z:60};W.gi=0;W.tm=0;W.sb=1;W.sbt=0;W.gs=[];
+ box(0,.02,0,20,.2,170,0x2b2b2b);
+ for(let i=0;i<8;i++){const x=Math.sin(i*1.2)*24,z=45-i*14,m=new THREE.Mesh(new THREE.TorusGeometry(4,.7,10,24),new THREE.MeshLambertMaterial({color:0x3a6ff0}));m.position.set(x,5,z);sc.add(m);W.gs.push(m)}
+ const pads=[[10,38],[-18,10],[20,-30]];pads.forEach(p=>box(p[0],.05,p[1],6,.2,6,0xffc928));
+ for(let i=0;i<9;i++){const x=Math.random()*70-35,z=Math.random()*90-35;box(x,0,z,6,2.5,1.5,0xe8453c,1);plats.push({x:x,y:1.25,z:z,w:6,h:2.5,d:1.5})}
+ W.upd=dt=>{const P=me.position;W.tm+=dt;W.sbt-=dt;if(W.sbt<=0)W.sb=1;
+  pads.forEach(p=>{if(Math.abs(P.x-p[0])<3.5&&Math.abs(P.z-p[1])<3.5&&P.y<1.5){W.sb=1.8;W.sbt=1.5}});
+  const g=W.gs[W.gi];if(g&&Math.hypot(P.x-g.position.x,P.z-g.position.z)<4.5&&P.y<9){g.material.color.set(0x2fb35a);W.gi++;toast('Gate '+W.gi+' of 8',700)}
+  W.gs.forEach((m,i)=>{if(i===W.gi)m.material.color.set(0xffd700)});
+  if(W.gi>=8){const t=W.tm,r=Math.max(20,Math.round(120-t*4));bestT(t);setC(coins+r);toast('Finished in '+t.toFixed(1)+' s! +'+r+' coins',4000);W.gi=0;W.tm=0;W.gs.forEach(m=>m.material.color.set(0x3a6ff0));P.set(0,1,60);vy=0}
+  W.obj='Gate '+Math.min(W.gi+1,8)+'/8 | '+W.tm.toFixed(1)+' s'+(ST.best?' | Best '+ST.best.toFixed(1)+' s':'');hud()}};
+B.custom=name=>{const d=mg[name];sc.background=new THREE.Color(0x9fd8ff);sc.fog=new THREE.Fog(0x9fd8ff,120,400);W.kill=[];W.ck=[];W.goal=null;W.sp={x:0,y:5,z:0};
+ d.objs.forEach(o=>{
+  if(o.role==='coin'){coin(o.x,o.z,o.y-2.5);return}
+  const g=o.sh==='sphere'?new THREE.SphereGeometry(.5,16,12):o.sh==='cyl'?new THREE.CylinderGeometry(.5,.5,1,20):new THREE.BoxGeometry(1,1,1),m=new THREE.Mesh(g,new THREE.MeshLambertMaterial({color:o.c,emissive:o.role==='goal'?0x443300:o.role==='kill'?0x550000:0}));
+  m.position.set(o.x,o.y,o.z);m.scale.set(o.sx,o.sy,o.sz);sc.add(m);
+  if(o.role==='solid'||o.role==='spawn'||o.role==='check'){plats.push({x:o.x,y:o.y,z:o.z,w:o.sx,h:o.sy,d:o.sz});walls.push({x:o.x,z:o.z,w:o.sx,d:o.sz,h:o.y+o.sy/2,b:o.y-o.sy/2})}
+  if(o.role==='spawn')W.sp={x:o.x,y:o.y+o.sy/2,z:o.z};
+  if(o.role==='kill')W.kill.push(o);if(o.role==='check')W.ck.push(o);if(o.role==='goal')W.goal=o});
+ W.upd=dt=>{const P=me.position;
+  for(const o of W.kill){if(Math.abs(P.x-o.x)<o.sx/2+1&&Math.abs(P.z-o.z)<o.sz/2+1&&P.y<o.y+o.sy/2+.3&&P.y+5>o.y-o.sy/2){P.set(cp.x,cp.y+1,cp.z);vy=0;toast('Back to your checkpoint',900)}}
+  for(const o of W.ck){if(on&&Math.abs(P.x-o.x)<o.sx/2&&Math.abs(P.z-o.z)<o.sz/2&&Math.abs(P.y-(o.y+o.sy/2))<.6)cp={x:o.x,y:o.y+o.sy/2,z:o.z}}
+  const gl=W.goal;if(gl&&Math.hypot(P.x-gl.x,P.y+2.5-gl.y,P.z-gl.z)<gl.sx/2+2.5){setC(coins+50);toast('You win! +50 coins',3500);P.set(W.sp.x,W.sp.y+1,W.sp.z);cp={x:W.sp.x,y:W.sp.y,z:W.sp.z};vy=0}
+  W.obj=name+' | coins left '+cm.length;hud()}};
 function startGame(id){
  show('game');
  try{R=new THREE.WebGLRenderer({canvas:$('#cv'),antialias:true})}catch(e){openHome();alert('3D is not supported on this device.');return}
@@ -164,11 +224,11 @@ function startGame(id){
  sc=new THREE.Scene();cam=new THREE.PerspectiveCamera(65,1,.1,400);size();
  hl=new THREE.HemisphereLight(0xffffff,0x778899,.95);sn=new THREE.DirectionalLight(0xffffff,.6);sn.position.set(30,60,20);sc.add(hl,sn);
  plats=[];cm=[];npcs=[];walls=[];fin=null;W={t:0,id:id,obj:''};
- B[id]();
+ if(id.indexOf('c:')===0)B.custom(id.slice(2));else B[id]();
  const s0=W.sp||{x:0,z:20};
- me=avatar(AV,user);me.position.set(s0.x,0,s0.z);sc.add(me);cp={x:s0.x,y:0,z:s0.z};vy=0;on=false;yaw=0;pitch=.35;jh=false;
+ me=avatar(AV,user);me.position.set(s0.x,s0.y||0,s0.z);sc.add(me);cp={x:s0.x,y:s0.y||0,z:s0.z};vy=0;on=false;yaw=0;pitch=.35;jh=false;
  $('#ab').style.display=id==='fruit'?'block':'none';
- hud();clock=new THREE.Clock();cancelAnimationFrame(raf);tick();toast(gi(id)[1]+': '+gi(id)[4],3200)}
+ hud();clock=new THREE.Clock();cancelAnimationFrame(raf);tick();toast(gi(id)?gi(id)[1]+': '+gi(id)[4]:id.slice(2),3200)}
 function size(){if(!R)return;const w=innerWidth,h=innerHeight;R.setSize(w,h,false);if(cam){cam.aspect=w/h;cam.updateProjectionMatrix()}}
 addEventListener('resize',size);
 function ground(x,z,f){let b=null;for(const p of plats){const t=p.y+p.h/2;if(Math.abs(x-p.x)<p.w/2+.4&&Math.abs(z-p.z)<p.d/2+.4&&t<=f+.4&&(!b||t>b.top))b={p:p,top:t}}return b}
@@ -177,7 +237,7 @@ function tick(){
  let ix=mv.x+(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0),iy=mv.y+(keys.w||keys.arrowup?1:0)-(keys.s||keys.arrowdown?1:0);
  const l=Math.hypot(ix,iy);if(l>1){ix/=l;iy/=l}
  const dx=-Math.sin(yaw)*iy+Math.cos(yaw)*ix,dz=-Math.cos(yaw)*iy-Math.sin(yaw)*ix,P=me.position;
- P.x=clamp(P.x+dx*15*dt,-300,300);P.z=clamp(P.z+dz*15*dt,-300,300);pushOut(P);
+ const sp=15*(W.sb||1);P.x=clamp(P.x+dx*sp*dt,-300,300);P.z=clamp(P.z+dz*sp*dt,-300,300);pushOut(P);
  if((keys[' ']||jh)&&on){vy=24;on=false}
  const py=P.y;vy-=60*dt;P.y+=vy*dt;const g=ground(P.x,P.z,py);on=false;
  if(g&&P.y<=g.top&&vy<=0){P.y=g.top;vy=0;on=true;P.x+=g.p.dx||0;if(g.p.cp)cp={x:g.p.x,y:g.top,z:g.p.z}}
