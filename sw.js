@@ -1,5 +1,5 @@
-const V='bloxverse-v2';
-const ASSETS=['./', 'index.html', 'css/style.css', 'js/app.js', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png', 'vendor/three.min.js', 'data/wiki.json', 'icons/games/obby.svg', 'icons/games/pets.svg', 'icons/games/haunted.svg', 'icons/games/town.svg', 'icons/games/murder.svg', 'icons/games/fruit.svg'];
+const V='bloxverse-v3';
+const ASSETS=['./', 'index.html', 'css/style.css', 'js/app.js', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png', 'vendor/three.min.js', 'data/wiki.json', 'icons/games/obby.svg', 'icons/games/pets.svg', 'icons/games/haunted.svg', 'icons/games/town.svg', 'icons/games/murder.svg', 'icons/games/fruit.svg', 'icons/logo.svg', 'icons/games/lava.svg', 'icons/games/race.svg'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(V).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==V).map(x=>caches.delete(x)))).then(()=>self.clients.claim()))});
 self.addEventListener('fetch',e=>{
