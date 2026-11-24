@@ -1,0 +1,37 @@
+{
+ "obby": {
+  "title": "Platformer",
+  "extract": "A platformer, also known as a jump 'n' run, is a subgenre of an action video game in which the core objective is to move the player character between points in an environment. Platform games are characterized by levels with uneven terrain and suspended platforms that require jumping and climbing to traverse. Other acrobatic maneuvers may factor into the gameplay, such as swinging from vines or grappling hooks, jumping off walls, gliding through the air, or bouncing from springboards or trampolines.",
+  "url": "https://en.wikipedia.org/wiki/Platformer"
+ },
+ "pets": {
+  "title": "Virtual pet",
+  "extract": "A virtual pet is a type of artificial human companion. They are usually kept for companionship or enjoyment, or as an alternative to a real pet.",
+  "url": "https://en.wikipedia.org/wiki/Virtual_pet"
+ },
+ "haunted": {
+  "title": "Survival horror",
+  "extract": "Survival horror is a subgenre of action-adventure games. Although combat can be part of the gameplay, the player is made to feel less in control than in typical action games through limited ammunition or weapons, health, speed, and vision, or through various obstructions of the player's interaction with the game mechanics. The player is also challenged to find items that unlock the path to new areas and solve puzzles to proceed in the game. Games make use of strong horror themes, such as dark mazelike environments and unexpected attacks from enemies.",
+  "url": "https://en.wikipedia.org/wiki/Survival_horror"
+ },
+ "town": {
+  "title": "Social simulation game",
+  "extract": "Social simulation games are a subgenre of life simulation games that explore social interactions between multiple artificial lives. Some examples include the SimCity, The Sims, Tomodachi Life and Animal Crossing series. The earliest were created for educational purposes, then gradually evolved to social and entertainment use.",
+  "url": "https://en.wikipedia.org/wiki/Social_simulation_game"
+ },
+ "murder": {
+  "title": "Murder mystery game",
+  "extract": "A murder mystery game is a type of party game in which players investigate and solve fictitious murders. In many variations, a player secretly plays as a murderer while the others attempt to determine the murderer's identity.",
+  "url": "https://en.wikipedia.org/wiki/Murder_mystery_game"
+ },
+ "fruit": {
+  "title": "Action role-playing game",
+  "extract": "An action role-playing game is a video game genre that combines core elements from both the action game and role-playing game genres.",
+  "url": "https://en.wikipedia.org/wiki/Action_role-playing_game"
+ },
+ "roblox": {
+  "title": "Roblox",
+  "extract": "Roblox is an online game platform and game creation system developed by Roblox Corporation that allows users to program and play games created by themselves or other users. It was developed by David Baszucki and Erik Cassel in 2004, and released to the public in 2006. As of February 2025, the platform has reported an average of 85.3\u00a0million daily active users. According to the company, its monthly player base includes half of all American children under the age of 16.",
+  "url": "https://en.wikipedia.org/wiki/Roblox"
+ }
+}
