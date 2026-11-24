@@ -25,9 +25,21 @@ and six playable 3D games built with [Three.js](https://threejs.org/).
 - Sign up and log in. Sign-up asks for a birthday, a username (3 to 20 characters, letters and numbers, at most one underscore, not at the start or end) and a password (8+ characters with a letter and a number).
 - Lobby with Home, Games, Friends and Avatar tabs.
 - Friends list: add friends, see who is online, and tap **Join** to jump into their game.
-- Avatar shirt colour, shared across every game.
+- Roblox-style avatar editor with a live 3D preview: skin tone, shirt, pants, hair, hat, back item and face. Your avatar shows in every game.
 - Coins are shared across every game and saved per account.
 - Works on phone and desktop. Installable and playable offline.
+
+## Game info from Wikipedia
+
+Tap a game to see its page: a logo, a short description, and a summary of the matching game genre taken from Wikipedia
+(for example Platform game, Virtual pet, Survival horror). The Games tab also has an About Roblox section.
+The text is stored in `data/wiki.json` so it works offline. Wikipedia text is available under
+[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), and each summary links back to its article.
+
+## Make your own games
+
+Use the companion app, **BloxVerse Studio**, a game maker that runs in the browser:
+https://github.com/abdulhameed8656006-prog/bloxverse-studio
 
 ## Controls
 
@@ -48,6 +60,8 @@ vendor/three.min.js   Three.js r128 (stored locally so the game works offline)
 sw.js                 Service worker (offline cache)
 manifest.webmanifest  PWA manifest
 icons/                192 and 512 px app icons
+icons/games/          Original logo for each game (SVG)
+data/wiki.json        Genre info from Wikipedia (CC BY-SA 4.0)
 ```
 
 ## Run locally
